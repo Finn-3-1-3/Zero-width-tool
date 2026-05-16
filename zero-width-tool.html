@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero-Width Text Tool</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --success: #10b981;
+    --danger: #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    border: 1px solid rgba(6,182,212,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    background: rgba(6,182,212,0.05);
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e2e8f0 30%, #7c3aed 70%, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 400;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 28px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    background: transparent;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .tab.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 20px rgba(124,58,237,0.4);
+  }
+
+  /* Panels */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+  }
+
+  .card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-label span.dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    display: inline-block;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 16px;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color .2s;
+    outline: none;
+  }
+
+  textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  }
+
+  textarea::placeholder { color: var(--muted); }
+
+  /* Row of inputs */
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media(max-width: 600px) { .row { grid-template-columns: 1fr; } }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+  }
+
+  .btn-primary:hover {
+    background: #6d28d9;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(124,58,237,0.45);
+  }
+
+  .btn-secondary {
+    background: rgba(6,182,212,0.1);
+    color: var(--accent2);
+    border: 1px solid rgba(6,182,212,0.3);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(6,182,212,0.2);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.04);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+  /* Arrow */
+  .arrow {
+    text-align: center;
+    font-size: 24px;
+    color: var(--accent);
+    margin: 8px 0;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+
+  /* Output section */
+  .output-area {
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 14px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 6px;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all .2s;
+    z-index: 2;
+  }
+
+  .copy-btn:hover { background: rgba(124,58,237,0.3); }
+  .copy-btn.copied { color: var(--success); border-color: var(--success); background: rgba(16,185,129,0.1); }
+
+  /* Stats bar */
+  .stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .stat { display: flex; align-items: center; gap: 6px; }
+  .stat-val { color: var(--accent3); font-weight: 700; }
+
+  /* Binary visualizer */
+  .binary-vis {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+
+  .binary-vis h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .char-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .char-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    animation: fadeIn .3s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  .char-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    color: var(--accent3);
+    width: 28px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .char-bits {
+    display: flex;
+    gap: 2px;
+  }
+
+  .bit {
+    width: 8px;
+    height: 16px;
+    border-radius: 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+  }
+
+  .bit-0 { background: rgba(124,58,237,0.3); border: 1px solid rgba(124,58,237,0.5); color: #a78bfa; }
+  .bit-1 { background: rgba(6,182,212,0.3); border: 1px solid rgba(6,182,212,0.5); color: #67e8f9; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    opacity: 0;
+    transition: all .3s;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* How it works */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .info-card {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .info-card .icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .info-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--accent2);
+  }
+
+  .info-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .char-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  .char-table th {
+    text-align: left;
+    padding: 10px 14px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .char-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(30,30,46,0.5);
+    vertical-align: middle;
+  }
+
+  .char-table tr:last-child td { border-bottom: none; }
+
+  .char-code {
+    color: var(--accent3);
+    font-weight: 700;
+  }
+
+  .char-role-0 { color: #a78bfa; }
+  .char-role-1 { color: #67e8f9; }
+
+  select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 10px 14px;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+  }
+
+  select:focus { border-color: var(--accent); }
+
+  label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">Unicode Steganography</div>
+    <h1>Zero‑Width Text Tool</h1>
+    <p class="subtitle">Ẩn thông điệp bí mật vào văn bản thông thường bằng ký tự không hiển thị</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('encode')">🔐 Mã hóa (Ẩn)</button>
+    <button class="tab" onclick="switchTab('decode')">🔍 Giải mã (Hiện)</button>
+    <button class="tab" onclick="switchTab('about')">📖 Nguyên lý</button>
+  </div>
+
+  <!-- ENCODE PANEL -->
+  <div class="panel active" id="panel-encode">
+    <div class="card">
+      <div class="card-label"><span class="dot"></span>BƯỚC 1 — VĂN BẢN HIỂN THỊ (cover text)</div>
+      <textarea id="coverText" rows="3" placeholder="Nhập văn bản bình thường mà mọi người sẽ thấy...
+Ví dụ: Hôm nay trời đẹp quá nhỉ!"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span class="dot"></span>BƯỚC 2 — TIN NHẮN BÍ MẬT</div>
+      <textarea id="secretText" rows="3" placeholder="Nhập tin nhắn cần ẩn...
+Ví dụ: Gặp nhau lúc 8pm tại quán cà phê góc phố"></textarea>
+
+      <div style="margin-top:16px;">
+        <label>Vị trí chèn ký tự ẩn</label>
+        <select id="insertMode">
+          <option value="end">Cuối văn bản</option>
+          <option value="start">Đầu văn bản</option>
+          <option value="middle">Giữa văn bản</option>
+          <option value="after-first-word">Sau từ đầu tiên</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="encode()">🔐 Tạo văn bản ẩn</button>
+      <button class="btn btn-ghost" onclick="clearEncode()">✕ Xóa</button>
+    </div>
+
+    <div id="encode-output" style="display:none; margin-top:24px;">
+      <div class="arrow">↓</div>
+      <div class="card">
+        <div class="card-label"><span class="dot"></span>KẾT QUẢ — VĂN BẢN ĐÃ ẨN TIN (sao chép & gửi đi)</div>
+        <div class="output-area">
+          <button class="copy-btn" id="copy-encode-btn" onclick="copyOutput('encodedResult', 'copy-encode-btn')">Copy</button>
+          <textarea id="encodedResult" rows="4" readonly></textarea>
+        </div>
+        <div class="stats" id="encode-stats"></div>
+      </div>
+
+      <div class="binary-vis">
+        <h3>📊 Trực quan hóa mã hóa nhị phân</h3>
+        <div class="char-grid" id="binaryVis"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECODE PANEL -->
+  <div class="panel" id="panel-decode">
+    <div class="card">
+      <div class="card-label"><span class="dot"></span>DÁN VĂN BẢN CÓ CHỨA TIN ẨN VÀO ĐÂY</div>
+      <textarea id="encodedInput" rows="5" placeholder="Dán văn bản nghi ngờ có chứa tin nhắn ẩn vào đây...
+
+(Kể cả khi trông có vẻ bình thường, công cụ sẽ phát hiện ký tự ẩn)"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="decode()">🔍 Giải mã</button>
+      <button class="btn btn-secondary" onclick="pasteAndDecode()">📋 Dán từ clipboard</button>
+      <button class="btn btn-ghost" onclick="clearDecode()">✕ Xóa</button>
+    </div>
+
+    <div id="decode-output" style="display:none; margin-top:24px;">
+      <div class="arrow">↓</div>
+      <div class="card" id="decode-result-card">
+        <div class="card-label"><span class="dot"></span>TIN NHẮN ẨN ĐƯỢC PHÁT HIỆN</div>
+        <div class="output-area">
+          <button class="copy-btn" id="copy-decode-btn" onclick="copyOutput('decodedResult', 'copy-decode-btn')">Copy</button>
+          <textarea id="decodedResult" rows="4" readonly></textarea>
+        </div>
+        <div class="stats" id="decode-stats"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT PANEL -->
+  <div class="panel" id="panel-about">
+    <div class="card">
+      <div class="card-label"><span class="dot"></span>NGUYÊN LÝ HOẠT ĐỘNG</div>
+      <p style="color:var(--muted); line-height:1.7; font-size:14px; margin-bottom:16px;">
+        Kỹ thuật này gọi là <strong style="color:var(--text)">Unicode Steganography</strong> — ẩn dữ liệu bằng ký tự không nhìn thấy được.
+        Mỗi ký tự bí mật được chuyển sang mã nhị phân 8-bit, rồi mỗi bit được đại diện bởi một ký tự zero-width.
+      </p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="icon">🔢</div>
+          <h4>Bước 1: ASCII → Binary</h4>
+          <p>"A" = 65 = 01000001<br>8 bits per character</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">👻</div>
+          <h4>Bước 2: Binary → ZW Chars</h4>
+          <p>0 → U+200B (ZW Space)<br>1 → U+200C (ZW Non-Joiner)</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🧵</div>
+          <h4>Bước 3: Chèn vào văn bản</h4>
+          <p>Chuỗi ẩn được chèn vào vị trí chọn trong văn bản gốc</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🔎</div>
+          <h4>Bước 4: Giải mã ngược</h4>
+          <p>Lọc ZW chars → ghép bits → chuyển thành ký tự đọc được</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span class="dot"></span>BẢNG KÝ TỰ ZERO-WIDTH</div>
+      <table class="char-table">
+        <thead>
+          <tr>
+            <th>Unicode</th>
+            <th>Tên</th>
+            <th>Vai trò</th>
+            <th>Hex</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="char-code">U+200B</td>
+            <td>Zero Width Space</td>
+            <td class="char-role-0">▪ BIT 0</td>
+            <td>\u200B</td>
+          </tr>
+          <tr>
+            <td class="char-code">U+200C</td>
+            <td>Zero Width Non-Joiner</td>
+            <td class="char-role-1">▪ BIT 1</td>
+            <td>\u200C</td>
+          </tr>
+          <tr>
+            <td class="char-code">U+200D</td>
+            <td>Zero Width Joiner</td>
+            <td style="color:var(--muted)">Delimiter (tuỳ chọn)</td>
+            <td>\u200D</td>
+          </tr>
+          <tr>
+            <td class="char-code">U+2060</td>
+            <td>Word Joiner</td>
+            <td style="color:var(--muted)">Invisible marker</td>
+            <td>\u2060</td>
+          </tr>
+          <tr>
+            <td class="char-code">U+FEFF</td>
+            <td>Zero Width No-Break Space</td>
+            <td style="color:var(--muted)">BOM / marker</td>
+            <td>\uFEFF</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span class="dot"></span>ỨNG DỤNG THỰC TẾ</div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="icon">🕵️</div>
+          <h4>Watermarking tài liệu</h4>
+          <p>Nhúng ID người nhận để phát hiện rò rỉ</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🔐</div>
+          <h4>Truyền tin bí mật</h4>
+          <p>Gửi thông điệp ẩn qua các nền tảng công khai</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">⚠️</div>
+          <h4>Tấn công phishing</h4>
+          <p>Hacker dùng để bypass bộ lọc URL/text</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🧪</div>
+          <h4>Nghiên cứu bảo mật</h4>
+          <p>Kiểm tra khả năng phát hiện của các hệ thống bảo mật</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Zero-width chars
+const ZW0 = '\u200B'; // bit 0
+const ZW1 = '\u200C'; // bit 1
+const ZW_CHARS = new Set(['\u200B','\u200C','\u200D','\u2060','\uFEFF']);
+
+function charToBinary(ch) {
+  const code = ch.charCodeAt(0);
+  return code.toString(2).padStart(8, '0');
+}
+
+function binaryToZW(binary) {
+  return binary.split('').map(b => b === '0' ? ZW0 : ZW1).join('');
+}
+
+function textToZW(text) {
+  return text.split('').map(ch => binaryToZW(charToBinary(ch))).join('');
+}
+
+function zwToText(zw) {
+  // filter only our encoding chars
+  const filtered = zw.split('').filter(c => c === ZW0 || c === ZW1).join('');
+  if (!filtered) return '';
+  let result = '';
+  for (let i = 0; i + 7 < filtered.length; i += 8) {
+    const byte = filtered.slice(i, i + 8);
+    const bits = byte.split('').map(c => c === ZW0 ? '0' : '1').join('');
+    const code = parseInt(bits, 2);
+    if (code > 0 && code < 128) {
+      result += String.fromCharCode(code);
+    }
+  }
+  return result;
+}
+
+function countZWChars(text) {
+  return text.split('').filter(c => ZW_CHARS.has(c)).length;
+}
+
+function encode() {
+  const cover = document.getElementById('coverText').value;
+  const secret = document.getElementById('secretText').value;
+  const mode = document.getElementById('insertMode').value;
+
+  if (!secret.trim()) { showToast('⚠️ Nhập tin nhắn bí mật!'); return; }
+
+  const hidden = textToZW(secret);
+  let result = '';
+
+  if (mode === 'end') {
+    result = cover + hidden;
+  } else if (mode === 'start') {
+    result = hidden + cover;
+  } else if (mode === 'middle') {
+    const mid = Math.floor(cover.length / 2);
+    result = cover.slice(0, mid) + hidden + cover.slice(mid);
+  } else if (mode === 'after-first-word') {
+    const spaceIdx = cover.indexOf(' ');
+    if (spaceIdx === -1) {
+      result = cover + hidden;
+    } else {
+      result = cover.slice(0, spaceIdx) + hidden + cover.slice(spaceIdx);
+    }
+  }
+
+  document.getElementById('encodedResult').value = result;
+
+  // Stats
+  const statsEl = document.getElementById('encode-stats');
+  statsEl.innerHTML = `
+    <div class="stat">📝 Cover: <span class="stat-val">${cover.length} chars</span></div>
+    <div class="stat">🔐 Secret: <span class="stat-val">${secret.length} chars</span></div>
+    <div class="stat">👻 ZW chars: <span class="stat-val">${hidden.length}</span></div>
+    <div class="stat">📦 Total: <span class="stat-val">${result.length} chars</span></div>
+  `;
+
+  // Binary visualization (first 6 chars max)
+  const sample = secret.slice(0, 8);
+  const vis = document.getElementById('binaryVis');
+  vis.innerHTML = '';
+  sample.split('').forEach((ch, idx) => {
+    const binary = charToBinary(ch);
+    const box = document.createElement('div');
+    box.className = 'char-box';
+    box.style.animationDelay = `${idx * 50}ms`;
+    const bits = binary.split('').map(b =>
+      `<div class="bit bit-${b}">${b}</div>`
+    ).join('');
+    box.innerHTML = `
+      <div class="char-display">${ch === ' ' ? '␣' : ch}</div>
+      <div class="char-bits">${bits}</div>
+    `;
+    vis.appendChild(box);
+  });
+  if (secret.length > 8) {
+    const more = document.createElement('div');
+    more.style.cssText = 'display:flex;align-items:center;color:var(--muted);font-family:Space Mono,monospace;font-size:12px;padding:8px;';
+    more.textContent = `+${secret.length - 8} ký tự nữa...`;
+    vis.appendChild(more);
+  }
+
+  document.getElementById('encode-output').style.display = 'block';
+  showToast('✓ Mã hóa thành công!');
+}
+
+function decode() {
+  const input = document.getElementById('encodedInput').value;
+
+  const zwCount = countZWChars(input);
+  if (zwCount === 0) {
+    document.getElementById('decodedResult').value = '(Không tìm thấy ký tự ẩn trong văn bản này)';
+    document.getElementById('decode-stats').innerHTML = `<div class="stat">⚠️ ZW chars: <span class="stat-val" style="color:var(--danger)">0</span></div>`;
+    document.getElementById('decode-output').style.display = 'block';
+    showToast('⚠️ Không có tin nhắn ẩn');
+    return;
+  }
+
+  const decoded = zwToText(input);
+  document.getElementById('decodedResult').value = decoded || '(Giải mã thất bại — dữ liệu không hợp lệ)';
+
+  const visibleText = input.split('').filter(c => !ZW_CHARS.has(c)).join('');
+  document.getElementById('decode-stats').innerHTML = `
+    <div class="stat">📝 Văn bản thấy: <span class="stat-val">${visibleText.length} chars</span></div>
+    <div class="stat">👻 ZW chars: <span class="stat-val" style="color:var(--success)">${zwCount}</span></div>
+    <div class="stat">🔐 Giải mã: <span class="stat-val" style="color:var(--success)">${decoded.length} chars</span></div>
+  `;
+
+  document.getElementById('decode-output').style.display = 'block';
+  showToast(decoded ? '✓ Giải mã thành công!' : '⚠️ Có ZW chars nhưng không đọc được');
+}
+
+async function pasteAndDecode() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById('encodedInput').value = text;
+    decode();
+  } catch {
+    showToast('⚠️ Không thể đọc clipboard — dán thủ công');
+  }
+}
+
+function copyOutput(id, btnId) {
+  const val = document.getElementById(id).value;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = document.getElementById(btnId);
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    showToast('✓ Đã sao chép vào clipboard!');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function clearEncode() {
+  document.getElementById('coverText').value = '';
+  document.getElementById('secretText').value = '';
+  document.getElementById('encode-output').style.display = 'none';
+}
+
+function clearDecode() {
+  document.getElementById('encodedInput').value = '';
+  document.getElementById('decode-output').style.display = 'none';
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['encode','decode','about'][i] === name);
+  });
+  document.querySelectorAll('.panel').forEach((p, i) => {
+    p.classList.toggle('active', ['panel-encode','panel-decode','panel-about'][i] === `panel-${name}`);
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Demo prefill
+window.onload = () => {
+  document.getElementById('coverText').value = 'Hôm nay thời tiết thật đẹp, bầu trời trong xanh và nắng vàng rực rỡ!';
+  document.getElementById('secretText').value = 'GAP 20:00 CAFE PHO CO';
+};
+</script>
+</body>
+</html>
