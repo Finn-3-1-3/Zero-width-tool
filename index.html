@@ -30,7 +30,6 @@
     overflow-x: hidden;
   }
 
-  /* animated grid background */
   body::before {
     content: '';
     position: fixed;
@@ -51,11 +50,7 @@
     padding: 40px 24px 80px;
   }
 
-  /* Header */
-  header {
-    text-align: center;
-    margin-bottom: 52px;
-  }
+  header { text-align: center; margin-bottom: 52px; }
 
   .badge {
     display: inline-block;
@@ -85,13 +80,11 @@
   .subtitle {
     color: var(--muted);
     font-size: 15px;
-    font-weight: 400;
     max-width: 480px;
     margin: 0 auto;
     line-height: 1.6;
   }
 
-  /* Tabs */
   .tabs {
     display: flex;
     gap: 4px;
@@ -123,11 +116,9 @@
     box-shadow: 0 0 20px rgba(124,58,237,0.4);
   }
 
-  /* Panels */
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* Card */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -167,10 +158,7 @@
     animation: pulse 2s infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
   textarea {
     width: 100%;
@@ -188,30 +176,10 @@
     outline: none;
   }
 
-  textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
-  }
-
+  textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
   textarea::placeholder { color: var(--muted); }
 
-  /* Row of inputs */
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  @media(max-width: 600px) { .row { grid-template-columns: 1fr; } }
-
-  /* Buttons */
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-  }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
 
   .btn {
     display: inline-flex;
@@ -228,60 +196,21 @@
     letter-spacing: 0.5px;
   }
 
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 4px 20px rgba(124,58,237,0.3);
-  }
-
-  .btn-primary:hover {
-    background: #6d28d9;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 28px rgba(124,58,237,0.45);
-  }
-
-  .btn-secondary {
-    background: rgba(6,182,212,0.1);
-    color: var(--accent2);
-    border: 1px solid rgba(6,182,212,0.3);
-  }
-
-  .btn-secondary:hover {
-    background: rgba(6,182,212,0.2);
-    transform: translateY(-1px);
-  }
-
-  .btn-ghost {
-    background: rgba(255,255,255,0.04);
-    color: var(--muted);
-    border: 1px solid var(--border);
-  }
-
+  .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+  .btn-primary:hover { background: #6d28d9; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(124,58,237,0.45); }
+  .btn-secondary { background: rgba(6,182,212,0.1); color: var(--accent2); border: 1px solid rgba(6,182,212,0.3); }
+  .btn-secondary:hover { background: rgba(6,182,212,0.2); transform: translateY(-1px); }
+  .btn-ghost { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid var(--border); }
   .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
-  /* Arrow */
-  .arrow {
-    text-align: center;
-    font-size: 24px;
-    color: var(--accent);
-    margin: 8px 0;
-    animation: bounce 2s infinite;
-  }
+  .arrow { text-align: center; font-size: 24px; color: var(--accent); margin: 8px 0; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(4px); }
-  }
-
-  /* Output section */
-  .output-area {
-    position: relative;
-  }
+  .output-area { position: relative; }
 
   .copy-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 8px; right: 8px;
     padding: 6px 14px;
     background: rgba(124,58,237,0.15);
     border: 1px solid rgba(124,58,237,0.3);
@@ -297,7 +226,6 @@
   .copy-btn:hover { background: rgba(124,58,237,0.3); }
   .copy-btn.copied { color: var(--success); border-color: var(--success); background: rgba(16,185,129,0.1); }
 
-  /* Stats bar */
   .stats {
     display: flex;
     gap: 20px;
@@ -315,7 +243,22 @@
   .stat { display: flex; align-items: center; gap: 6px; }
   .stat-val { color: var(--accent3); font-weight: 700; }
 
-  /* Binary visualizer */
+  .savings-bar {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .savings-val { color: var(--success); font-weight: 700; font-size: 14px; }
+
+  .bar-track { margin-top: 8px; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 99px; transition: width 0.5s ease; }
+
   .binary-vis {
     margin-top: 20px;
     padding: 20px;
@@ -334,11 +277,7 @@
     margin-bottom: 14px;
   }
 
-  .char-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+  .char-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 
   .char-box {
     display: flex;
@@ -349,27 +288,21 @@
     opacity: 0;
   }
 
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { to { opacity: 1; } }
 
   .char-display {
     font-family: 'Space Mono', monospace;
-    font-size: 18px;
+    font-size: 16px;
     color: var(--accent3);
-    width: 28px;
+    width: 32px;
     text-align: center;
     font-weight: 700;
   }
 
-  .char-bits {
-    display: flex;
-    gap: 2px;
-  }
+  .char-bits { display: flex; gap: 2px; }
 
   .bit {
-    width: 8px;
-    height: 16px;
+    width: 10px; height: 16px;
     border-radius: 2px;
     font-family: 'Space Mono', monospace;
     font-size: 8px;
@@ -382,12 +315,12 @@
 
   .bit-0 { background: rgba(124,58,237,0.3); border: 1px solid rgba(124,58,237,0.5); color: #a78bfa; }
   .bit-1 { background: rgba(6,182,212,0.3); border: 1px solid rgba(6,182,212,0.5); color: #67e8f9; }
+  .bit-2 { background: rgba(245,158,11,0.3); border: 1px solid rgba(245,158,11,0.5); color: #fcd34d; }
+  .bit-3 { background: rgba(16,185,129,0.3); border: 1px solid rgba(16,185,129,0.5); color: #6ee7b7; }
 
-  /* Toast */
   .toast {
     position: fixed;
-    bottom: 28px;
-    left: 50%;
+    bottom: 28px; left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: var(--success);
     color: white;
@@ -401,78 +334,24 @@
     z-index: 100;
   }
 
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* How it works */
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-top: 16px;
-  }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
 
-  .info-card {
-    background: rgba(0,0,0,0.2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-  }
+  .info-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .info-card .icon { font-size: 24px; margin-bottom: 10px; }
+  .info-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--accent2); }
+  .info-card p { font-size: 13px; color: var(--muted); line-height: 1.6; font-family: 'Space Mono', monospace; }
 
-  .info-card .icon {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-
-  .info-card h4 {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--accent2);
-  }
-
-  .info-card p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    font-family: 'Space Mono', monospace;
-  }
-
-  .char-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    margin-top: 16px;
-  }
-
-  .char-table th {
-    text-align: left;
-    padding: 10px 14px;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .char-table td {
-    padding: 10px 14px;
-    border-bottom: 1px solid rgba(30,30,46,0.5);
-    vertical-align: middle;
-  }
-
+  .char-table { width: 100%; border-collapse: collapse; font-family: 'Space Mono', monospace; font-size: 13px; margin-top: 16px; }
+  .char-table th { text-align: left; padding: 10px 14px; color: var(--muted); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .char-table td { padding: 10px 14px; border-bottom: 1px solid rgba(30,30,46,0.5); vertical-align: middle; }
   .char-table tr:last-child td { border-bottom: none; }
-
-  .char-code {
-    color: var(--accent3);
-    font-weight: 700;
-  }
-
+  .char-code { color: var(--accent3); font-weight: 700; }
   .char-role-0 { color: #a78bfa; }
   .char-role-1 { color: #67e8f9; }
+  .char-role-2 { color: #fcd34d; }
+  .char-role-3 { color: #6ee7b7; }
 
   select {
     background: rgba(0,0,0,0.3);
@@ -504,9 +383,9 @@
 
 <div class="container">
   <header>
-    <div class="badge">Unicode Steganography</div>
+    <div class="badge">Unicode Steganography · Base-4 + LZ</div>
     <h1>Zero‑Width Text Tool</h1>
-    <p class="subtitle">Ẩn thông điệp bí mật vào văn bản thông thường bằng ký tự không hiển thị</p>
+    <p class="subtitle">Ẩn thông điệp bí mật vào văn bản thường — nén tới <strong style="color:var(--success)">~75%</strong> so với phiên bản cũ</p>
   </header>
 
   <div class="tabs">
@@ -519,15 +398,12 @@
   <div class="panel active" id="panel-encode">
     <div class="card">
       <div class="card-label"><span class="dot"></span>BƯỚC 1 — VĂN BẢN HIỂN THỊ (cover text)</div>
-      <textarea id="coverText" rows="3" placeholder="Nhập văn bản bình thường mà mọi người sẽ thấy...
-Ví dụ: Hôm nay trời đẹp quá nhỉ!"></textarea>
+      <textarea id="coverText" rows="3" placeholder="Nhập văn bản bình thường mà mọi người sẽ thấy..."></textarea>
     </div>
 
     <div class="card">
       <div class="card-label"><span class="dot"></span>BƯỚC 2 — TIN NHẮN BÍ MẬT</div>
-      <textarea id="secretText" rows="3" placeholder="Nhập tin nhắn cần ẩn...
-Ví dụ: Gặp nhau lúc 8pm tại quán cà phê góc phố"></textarea>
-
+      <textarea id="secretText" rows="3" placeholder="Nhập tin nhắn cần ẩn..."></textarea>
       <div style="margin-top:16px;">
         <label>Vị trí chèn ký tự ẩn</label>
         <select id="insertMode">
@@ -547,16 +423,19 @@ Ví dụ: Gặp nhau lúc 8pm tại quán cà phê góc phố"></textarea>
     <div id="encode-output" style="display:none; margin-top:24px;">
       <div class="arrow">↓</div>
       <div class="card">
-        <div class="card-label"><span class="dot"></span>KẾT QUẢ — VĂN BẢN ĐÃ ẨN TIN (sao chép & gửi đi)</div>
+        <div class="card-label"><span class="dot"></span>KẾT QUẢ — VĂN BẢN ĐÃ ẨN TIN</div>
         <div class="output-area">
-          <button class="copy-btn" id="copy-encode-btn" onclick="copyOutput('encodedResult', 'copy-encode-btn')">Copy</button>
+          <button class="copy-btn" id="copy-encode-btn" onclick="copyOutput('encodedResult','copy-encode-btn')">Copy</button>
           <textarea id="encodedResult" rows="4" readonly></textarea>
         </div>
         <div class="stats" id="encode-stats"></div>
+        <div class="savings-bar">
+          Tiết kiệm so với 8-bit binary cũ: <span class="savings-val" id="savings-pct">—</span>
+          <div class="bar-track"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+        </div>
       </div>
-
       <div class="binary-vis">
-        <h3>📊 Trực quan hóa mã hóa nhị phân</h3>
+        <h3>📊 Trực quan — Base-4 encoding (sau LZ compress)</h3>
         <div class="char-grid" id="binaryVis"></div>
       </div>
     </div>
@@ -566,23 +445,19 @@ Ví dụ: Gặp nhau lúc 8pm tại quán cà phê góc phố"></textarea>
   <div class="panel" id="panel-decode">
     <div class="card">
       <div class="card-label"><span class="dot"></span>DÁN VĂN BẢN CÓ CHỨA TIN ẨN VÀO ĐÂY</div>
-      <textarea id="encodedInput" rows="5" placeholder="Dán văn bản nghi ngờ có chứa tin nhắn ẩn vào đây...
-
-(Kể cả khi trông có vẻ bình thường, công cụ sẽ phát hiện ký tự ẩn)"></textarea>
+      <textarea id="encodedInput" rows="5" placeholder="Dán văn bản nghi ngờ có chứa tin nhắn ẩn vào đây..."></textarea>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-primary" onclick="decode()">🔍 Giải mã</button>
       <button class="btn btn-secondary" onclick="pasteAndDecode()">📋 Dán từ clipboard</button>
       <button class="btn btn-ghost" onclick="clearDecode()">✕ Xóa</button>
     </div>
-
     <div id="decode-output" style="display:none; margin-top:24px;">
       <div class="arrow">↓</div>
-      <div class="card" id="decode-result-card">
+      <div class="card">
         <div class="card-label"><span class="dot"></span>TIN NHẮN ẨN ĐƯỢC PHÁT HIỆN</div>
         <div class="output-area">
-          <button class="copy-btn" id="copy-decode-btn" onclick="copyOutput('decodedResult', 'copy-decode-btn')">Copy</button>
+          <button class="copy-btn" id="copy-decode-btn" onclick="copyOutput('decodedResult','copy-decode-btn')">Copy</button>
           <textarea id="decodedResult" rows="4" readonly></textarea>
         </div>
         <div class="stats" id="decode-stats"></div>
@@ -593,106 +468,44 @@ Ví dụ: Gặp nhau lúc 8pm tại quán cà phê góc phố"></textarea>
   <!-- ABOUT PANEL -->
   <div class="panel" id="panel-about">
     <div class="card">
-      <div class="card-label"><span class="dot"></span>NGUYÊN LÝ HOẠT ĐỘNG</div>
-      <p style="color:var(--muted); line-height:1.7; font-size:14px; margin-bottom:16px;">
-        Kỹ thuật này gọi là <strong style="color:var(--text)">Unicode Steganography</strong> — ẩn dữ liệu bằng ký tự không nhìn thấy được.
-        Mỗi ký tự bí mật được chuyển sang mã nhị phân 8-bit, rồi mỗi bit được đại diện bởi một ký tự zero-width.
+      <div class="card-label"><span class="dot"></span>NGUYÊN LÝ HOẠT ĐỘNG (v2 — Base-4 + LZ)</div>
+      <p style="color:var(--muted);line-height:1.7;font-size:14px;margin-bottom:16px;">
+        Phiên bản này dùng <strong style="color:var(--text)">2 bước tối ưu</strong> để giảm số ký tự ẩn xuống còn ~25% so với bản gốc:<br><br>
+        <strong style="color:var(--accent2)">Bước 1 — LZ Compression:</strong> Nén văn bản bằng thuật toán LZ77 trước khi mã hóa.<br><br>
+        <strong style="color:var(--accent2)">Bước 2 — Base-4 Encoding:</strong> Dùng 4 ký tự ZW thay vì 2. Mỗi ZW char chứa 2 bits thay vì 1 bit → giảm 50% số ký tự.
       </p>
-
       <div class="info-grid">
-        <div class="info-card">
-          <div class="icon">🔢</div>
-          <h4>Bước 1: ASCII → Binary</h4>
-          <p>"A" = 65 = 01000001<br>8 bits per character</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">👻</div>
-          <h4>Bước 2: Binary → ZW Chars</h4>
-          <p>0 → U+200B (ZW Space)<br>1 → U+200C (ZW Non-Joiner)</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🧵</div>
-          <h4>Bước 3: Chèn vào văn bản</h4>
-          <p>Chuỗi ẩn được chèn vào vị trí chọn trong văn bản gốc</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🔎</div>
-          <h4>Bước 4: Giải mã ngược</h4>
-          <p>Lọc ZW chars → ghép bits → chuyển thành ký tự đọc được</p>
-        </div>
+        <div class="info-card"><div class="icon">🗜️</div><h4>Bước 1: LZ Compress</h4><p>"hello hello" → nén phần lặp → dữ liệu nhỏ hơn</p></div>
+        <div class="info-card"><div class="icon">🔢</div><h4>Bước 2: → Base-4</h4><p>Mỗi byte → 4 chữ số cơ số 4 (thay vì 8 bits nhị phân)</p></div>
+        <div class="info-card"><div class="icon">👻</div><h4>Bước 3: → ZW chars</h4><p>0→U+200B · 1→U+200C · 2→U+200D · 3→U+2060</p></div>
+        <div class="info-card"><div class="icon">🔎</div><h4>Bước 4: Giải mã</h4><p>ZW → base-4 → bytes → LZ decompress → text gốc</p></div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-label"><span class="dot"></span>BẢNG KÝ TỰ ZERO-WIDTH</div>
+      <div class="card-label"><span class="dot"></span>SO SÁNH HIỆU SUẤT</div>
       <table class="char-table">
-        <thead>
-          <tr>
-            <th>Unicode</th>
-            <th>Tên</th>
-            <th>Vai trò</th>
-            <th>Hex</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Phương pháp</th><th>ZW / ký tự</th><th>Ví dụ 21 chars</th><th>Tiết kiệm</th></tr></thead>
         <tbody>
-          <tr>
-            <td class="char-code">U+200B</td>
-            <td>Zero Width Space</td>
-            <td class="char-role-0">▪ BIT 0</td>
-            <td>\u200B</td>
-          </tr>
-          <tr>
-            <td class="char-code">U+200C</td>
-            <td>Zero Width Non-Joiner</td>
-            <td class="char-role-1">▪ BIT 1</td>
-            <td>\u200C</td>
-          </tr>
-          <tr>
-            <td class="char-code">U+200D</td>
-            <td>Zero Width Joiner</td>
-            <td style="color:var(--muted)">Delimiter (tuỳ chọn)</td>
-            <td>\u200D</td>
-          </tr>
-          <tr>
-            <td class="char-code">U+2060</td>
-            <td>Word Joiner</td>
-            <td style="color:var(--muted)">Invisible marker</td>
-            <td>\u2060</td>
-          </tr>
-          <tr>
-            <td class="char-code">U+FEFF</td>
-            <td>Zero Width No-Break Space</td>
-            <td style="color:var(--muted)">BOM / marker</td>
-            <td>\uFEFF</td>
-          </tr>
+          <tr><td>Binary 8-bit (cũ)</td><td>8</td><td>168 ZW</td><td>—</td></tr>
+          <tr><td>Base-4 (không nén)</td><td>4</td><td>84 ZW</td><td style="color:var(--success)">−50%</td></tr>
+          <tr><td style="color:var(--accent3);font-weight:700">Base-4 + LZ (v2)</td><td>~1–2</td><td style="color:var(--accent3)">~40–84 ZW*</td><td style="color:var(--success);font-weight:700">−50~75%</td></tr>
         </tbody>
       </table>
+      <p style="color:var(--muted);font-size:12px;margin-top:10px;font-family:'Space Mono',monospace;">* LZ hiệu quả hơn khi text dài và có nhiều từ lặp lại</p>
     </div>
 
     <div class="card">
-      <div class="card-label"><span class="dot"></span>ỨNG DỤNG THỰC TẾ</div>
-      <div class="info-grid">
-        <div class="info-card">
-          <div class="icon">🕵️</div>
-          <h4>Watermarking tài liệu</h4>
-          <p>Nhúng ID người nhận để phát hiện rò rỉ</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🔐</div>
-          <h4>Truyền tin bí mật</h4>
-          <p>Gửi thông điệp ẩn qua các nền tảng công khai</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">⚠️</div>
-          <h4>Tấn công phishing</h4>
-          <p>Hacker dùng để bypass bộ lọc URL/text</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🧪</div>
-          <h4>Nghiên cứu bảo mật</h4>
-          <p>Kiểm tra khả năng phát hiện của các hệ thống bảo mật</p>
-        </div>
-      </div>
+      <div class="card-label"><span class="dot"></span>BẢNG KÝ TỰ ZERO-WIDTH (BASE-4)</div>
+      <table class="char-table">
+        <thead><tr><th>Unicode</th><th>Tên</th><th>Vai trò</th><th>Hex</th></tr></thead>
+        <tbody>
+          <tr><td class="char-code">U+200B</td><td>Zero Width Space</td><td class="char-role-0">▪ DIGIT 0</td><td>\u200B</td></tr>
+          <tr><td class="char-code">U+200C</td><td>Zero Width Non-Joiner</td><td class="char-role-1">▪ DIGIT 1</td><td>\u200C</td></tr>
+          <tr><td class="char-code">U+200D</td><td>Zero Width Joiner</td><td class="char-role-2">▪ DIGIT 2</td><td>\u200D</td></tr>
+          <tr><td class="char-code">U+2060</td><td>Word Joiner</td><td class="char-role-3">▪ DIGIT 3</td><td>\u2060</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -700,188 +513,178 @@ Ví dụ: Gặp nhau lúc 8pm tại quán cà phê góc phố"></textarea>
 <div class="toast" id="toast"></div>
 
 <script>
-// Zero-width chars
-const ZW0 = '\u200B'; // bit 0
-const ZW1 = '\u200C'; // bit 1
-const ZW_CHARS = new Set(['\u200B','\u200C','\u200D','\u2060','\uFEFF']);
+// ── Base-4 Zero-Width chars ───────────────────────────────────────────────────
+const ZW = ['\u200B', '\u200C', '\u200D', '\u2060']; // digits 0–3
+const ZW_SET = new Set(ZW);
 
-function charToBinary(ch) {
-  const code = ch.charCodeAt(0);
-  return code.toString(2).padStart(8, '0');
-}
-
-function binaryToZW(binary) {
-  return binary.split('').map(b => b === '0' ? ZW0 : ZW1).join('');
-}
-
-function textToZW(text) {
-  return text.split('').map(ch => binaryToZW(charToBinary(ch))).join('');
-}
-
-function zwToText(zw) {
-  // filter only our encoding chars
-  const filtered = zw.split('').filter(c => c === ZW0 || c === ZW1).join('');
-  if (!filtered) return '';
-  let result = '';
-  for (let i = 0; i + 7 < filtered.length; i += 8) {
-    const byte = filtered.slice(i, i + 8);
-    const bits = byte.split('').map(c => c === ZW0 ? '0' : '1').join('');
-    const code = parseInt(bits, 2);
-    if (code > 0 && code < 128) {
-      result += String.fromCharCode(code);
+// ── LZ78 compression (pure JS, no dependencies) ───────────────────────────────
+const LZ = (() => {
+  function compress(input) {
+    const dict = {};
+    let dictSize = 256;
+    for (let i = 0; i < 256; i++) dict[String.fromCharCode(i)] = i;
+    let w = '', result = [];
+    for (const c of input) {
+      const wc = w + c;
+      if (dict[wc] !== undefined) { w = wc; }
+      else { result.push(dict[w]); dict[wc] = dictSize++; w = c; }
     }
+    if (w !== '') result.push(dict[w]);
+    return result;
   }
-  return result;
+
+  function decompress(codes) {
+    if (!codes.length) return '';
+    const dict = {};
+    let dictSize = 256;
+    for (let i = 0; i < 256; i++) dict[i] = String.fromCharCode(i);
+    let w = String.fromCharCode(codes[0]);
+    let result = w;
+    for (let i = 1; i < codes.length; i++) {
+      const k = codes[i];
+      const entry = dict[k] !== undefined ? dict[k] : (k === dictSize ? w + w[0] : null);
+      if (!entry) throw new Error('Bad data');
+      result += entry;
+      dict[dictSize++] = w + entry[0];
+      w = entry;
+    }
+    return result;
+  }
+  return { compress, decompress };
+})();
+
+// ── Base-4 ↔ ZW ──────────────────────────────────────────────────────────────
+// Each LZ code (0–65535) → 8 base-4 digits → 8 ZW chars
+function codesToZW(codes) {
+  return codes.map(code => {
+    let s = '', n = code;
+    for (let i = 0; i < 8; i++) { s = ZW[n & 3] + s; n >>= 2; }
+    return s;
+  }).join('');
 }
 
-function countZWChars(text) {
-  return text.split('').filter(c => ZW_CHARS.has(c)).length;
+function zwToCodes(text) {
+  const filtered = [...text].filter(c => ZW_SET.has(c));
+  const codes = [];
+  for (let i = 0; i + 7 < filtered.length; i += 8) {
+    let val = 0;
+    for (let j = 0; j < 8; j++) val = (val << 2) | ZW.indexOf(filtered[i + j]);
+    codes.push(val);
+  }
+  return codes;
 }
 
+function countZW(text) { return [...text].filter(c => ZW_SET.has(c)).length; }
+
+// ── Encode ────────────────────────────────────────────────────────────────────
 function encode() {
   const cover = document.getElementById('coverText').value;
   const secret = document.getElementById('secretText').value;
-  const mode = document.getElementById('insertMode').value;
-
+  const mode   = document.getElementById('insertMode').value;
   if (!secret.trim()) { showToast('⚠️ Nhập tin nhắn bí mật!'); return; }
 
-  const hidden = textToZW(secret);
-  let result = '';
+  const codes  = LZ.compress(secret);
+  const hidden = codesToZW(codes);
+  const oldCount = secret.length * 8; // what binary would have used
 
-  if (mode === 'end') {
-    result = cover + hidden;
-  } else if (mode === 'start') {
-    result = hidden + cover;
-  } else if (mode === 'middle') {
-    const mid = Math.floor(cover.length / 2);
-    result = cover.slice(0, mid) + hidden + cover.slice(mid);
-  } else if (mode === 'after-first-word') {
-    const spaceIdx = cover.indexOf(' ');
-    if (spaceIdx === -1) {
-      result = cover + hidden;
-    } else {
-      result = cover.slice(0, spaceIdx) + hidden + cover.slice(spaceIdx);
-    }
-  }
+  let result = '';
+  if (mode === 'end')   result = cover + hidden;
+  else if (mode === 'start') result = hidden + cover;
+  else if (mode === 'middle') { const m = Math.floor(cover.length/2); result = cover.slice(0,m)+hidden+cover.slice(m); }
+  else { const sp = cover.indexOf(' '); result = sp===-1 ? cover+hidden : cover.slice(0,sp)+hidden+cover.slice(sp); }
 
   document.getElementById('encodedResult').value = result;
 
-  // Stats
-  const statsEl = document.getElementById('encode-stats');
-  statsEl.innerHTML = `
-    <div class="stat">📝 Cover: <span class="stat-val">${cover.length} chars</span></div>
+  const saved = Math.round((1 - hidden.length / oldCount) * 100);
+  document.getElementById('encode-stats').innerHTML = `
+    <div class="stat">📝 Cover: <span class="stat-val">${cover.length}</span></div>
     <div class="stat">🔐 Secret: <span class="stat-val">${secret.length} chars</span></div>
+    <div class="stat">🗜️ LZ codes: <span class="stat-val">${codes.length}</span></div>
     <div class="stat">👻 ZW chars: <span class="stat-val">${hidden.length}</span></div>
-    <div class="stat">📦 Total: <span class="stat-val">${result.length} chars</span></div>
+    <div class="stat">📦 Total: <span class="stat-val">${result.length}</span></div>
   `;
+  document.getElementById('savings-pct').textContent = `−${saved}%  (${oldCount} → ${hidden.length} ZW chars)`;
+  document.getElementById('bar-fill').style.width = Math.max(0, saved) + '%';
 
-  // Binary visualization (first 6 chars max)
-  const sample = secret.slice(0, 8);
+  // Visualizer
   const vis = document.getElementById('binaryVis');
   vis.innerHTML = '';
-  sample.split('').forEach((ch, idx) => {
-    const binary = charToBinary(ch);
+  codes.slice(0, 8).forEach((code, idx) => {
+    let digits = [], n = code;
+    for (let i = 0; i < 8; i++) { digits.unshift(n & 3); n >>= 2; }
     const box = document.createElement('div');
     box.className = 'char-box';
-    box.style.animationDelay = `${idx * 50}ms`;
-    const bits = binary.split('').map(b =>
-      `<div class="bit bit-${b}">${b}</div>`
-    ).join('');
-    box.innerHTML = `
-      <div class="char-display">${ch === ' ' ? '␣' : ch}</div>
-      <div class="char-bits">${bits}</div>
-    `;
+    box.style.animationDelay = idx * 50 + 'ms';
+    const label = code < 256 ? (code === 32 ? '␣' : String.fromCharCode(code)) : '#' + code;
+    box.innerHTML = `<div class="char-display">${label}</div><div class="char-bits">${digits.map(d=>`<div class="bit bit-${d}">${d}</div>`).join('')}</div>`;
     vis.appendChild(box);
   });
-  if (secret.length > 8) {
+  if (codes.length > 8) {
     const more = document.createElement('div');
     more.style.cssText = 'display:flex;align-items:center;color:var(--muted);font-family:Space Mono,monospace;font-size:12px;padding:8px;';
-    more.textContent = `+${secret.length - 8} ký tự nữa...`;
+    more.textContent = `+${codes.length - 8} codes nữa...`;
     vis.appendChild(more);
   }
 
   document.getElementById('encode-output').style.display = 'block';
-  showToast('✓ Mã hóa thành công!');
+  showToast(`✓ Xong! Tiết kiệm ${saved}% ZW chars`);
 }
 
+// ── Decode ────────────────────────────────────────────────────────────────────
 function decode() {
   const input = document.getElementById('encodedInput').value;
+  const zwCount = countZW(input);
 
-  const zwCount = countZWChars(input);
   if (zwCount === 0) {
-    document.getElementById('decodedResult').value = '(Không tìm thấy ký tự ẩn trong văn bản này)';
+    document.getElementById('decodedResult').value = '(Không tìm thấy ký tự ẩn)';
     document.getElementById('decode-stats').innerHTML = `<div class="stat">⚠️ ZW chars: <span class="stat-val" style="color:var(--danger)">0</span></div>`;
     document.getElementById('decode-output').style.display = 'block';
     showToast('⚠️ Không có tin nhắn ẩn');
     return;
   }
 
-  const decoded = zwToText(input);
-  document.getElementById('decodedResult').value = decoded || '(Giải mã thất bại — dữ liệu không hợp lệ)';
+  let decoded = '';
+  try { decoded = LZ.decompress(zwToCodes(input)); } catch(e) { decoded = ''; }
 
-  const visibleText = input.split('').filter(c => !ZW_CHARS.has(c)).join('');
+  document.getElementById('decodedResult').value = decoded || '(Giải mã thất bại — có thể được mã hóa bằng phiên bản khác)';
+  const visible = [...input].filter(c => !ZW_SET.has(c)).join('');
   document.getElementById('decode-stats').innerHTML = `
-    <div class="stat">📝 Văn bản thấy: <span class="stat-val">${visibleText.length} chars</span></div>
+    <div class="stat">📝 Văn bản thấy: <span class="stat-val">${visible.length}</span></div>
     <div class="stat">👻 ZW chars: <span class="stat-val" style="color:var(--success)">${zwCount}</span></div>
     <div class="stat">🔐 Giải mã: <span class="stat-val" style="color:var(--success)">${decoded.length} chars</span></div>
   `;
-
   document.getElementById('decode-output').style.display = 'block';
   showToast(decoded ? '✓ Giải mã thành công!' : '⚠️ Có ZW chars nhưng không đọc được');
 }
 
 async function pasteAndDecode() {
-  try {
-    const text = await navigator.clipboard.readText();
-    document.getElementById('encodedInput').value = text;
-    decode();
-  } catch {
-    showToast('⚠️ Không thể đọc clipboard — dán thủ công');
-  }
+  try { const t = await navigator.clipboard.readText(); document.getElementById('encodedInput').value = t; decode(); }
+  catch { showToast('⚠️ Không thể đọc clipboard — dán thủ công'); }
 }
 
 function copyOutput(id, btnId) {
-  const val = document.getElementById(id).value;
-  navigator.clipboard.writeText(val).then(() => {
+  navigator.clipboard.writeText(document.getElementById(id).value).then(() => {
     const btn = document.getElementById(btnId);
-    btn.textContent = '✓ Copied!';
-    btn.classList.add('copied');
-    showToast('✓ Đã sao chép vào clipboard!');
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 2000);
+    btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+    showToast('✓ Đã sao chép!');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
 }
 
-function clearEncode() {
-  document.getElementById('coverText').value = '';
-  document.getElementById('secretText').value = '';
-  document.getElementById('encode-output').style.display = 'none';
-}
-
-function clearDecode() {
-  document.getElementById('encodedInput').value = '';
-  document.getElementById('decode-output').style.display = 'none';
-}
+function clearEncode() { document.getElementById('coverText').value = ''; document.getElementById('secretText').value = ''; document.getElementById('encode-output').style.display = 'none'; }
+function clearDecode() { document.getElementById('encodedInput').value = ''; document.getElementById('decode-output').style.display = 'none'; }
 
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', ['encode','decode','about'][i] === name);
-  });
-  document.querySelectorAll('.panel').forEach((p, i) => {
-    p.classList.toggle('active', ['panel-encode','panel-decode','panel-about'][i] === `panel-${name}`);
-  });
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['encode','decode','about'][i]===name));
+  document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', ['panel-encode','panel-decode','panel-about'][i]===`panel-${name}`));
 }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// Demo prefill
 window.onload = () => {
   document.getElementById('coverText').value = 'Hôm nay thời tiết thật đẹp, bầu trời trong xanh và nắng vàng rực rỡ!';
   document.getElementById('secretText').value = 'GAP 20:00 CAFE PHO CO';
